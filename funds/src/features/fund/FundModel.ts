@@ -1,4 +1,4 @@
-export class Fund {
+export class FundModel {
     code: string;
     name: string;
     value: number;
