@@ -12,17 +12,24 @@ export class FundModel {
 
 
 export class FundTableCol {
-    id: number;
+    id: string;
     label: string;
     minWidth: number;
     align: string;
     format: string;
 
-    constructor(id: number, label: string, minWidth: number, align: string, format: string) {
+    constructor(id: string, label: string, minWidth: number, align: string, format: string) {
         this.id = id;
         this.label = label;
         this.minWidth = minWidth;
         this.align = align;
         this.format = format;
     }
+}
+
+export interface Fund {
+    chineseName: string;
+    code: string;
+    pseudo: string;
+    value: number;
 }

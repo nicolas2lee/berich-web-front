@@ -7,38 +7,37 @@ import TableHead from "@material-ui/core/TableHead/TableHead";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
 import TableBody from "@material-ui/core/TableBody/TableBody";
-import {FundModel, FundTableCol} from "./FundModel";
+import {Fund, FundTableCol} from "./FundModel";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types'
-import {fetchFunds} from "./FundsAction";
+import {mockFetchFunds} from "./FundsAction";
 
 const columns: FundTableCol[] = [
-        new FundTableCol(1, 'Name', 170, 'right', ''),
-        new FundTableCol(2, 'ISO\u00a0Code', 100, 'right', ''),
-        new FundTableCol(3, 'Value', 170, 'right', ''),
-    ];
-
-    function createData(code: string, name: string, value: number): FundModel {
-        return new FundModel(code, name, value)
-        //return { name, code, population, size, density };
-    }
-
-    const rows: any[] = [
-        ['India', 'IN', '1324171354'],
-        ['India', 'IN', '1324171354'],
-        //createData('India', 'IN', 1324171354),
-        //createData('China', 'CN', 14035003),
-        //createData('Italy', 'IT', 60483973),
-        //createData('United States', 'US', 327167434)
+        new FundTableCol('code', 'Name', 170, 'right', ''),
+        new FundTableCol('chineseName', 'ISO\u00a0Code', 100, 'right', ''),
+        new FundTableCol('pseudo', 'ISO\u00a0Code', 100, 'right', ''),
+        new FundTableCol('value', 'Value', 170, 'right', ''),
     ];
 
 class FundList extends React.Component{
+
     componentDidMount(): void {
-        const {dispatch}  = this.props;
-        dispatch(fetchFunds())
+        this.props.dispatch(mockFetchFunds())
     }
 
     render() {
+        console.log( 'state');
+        console.log( this.props);
+        const { error, loading, funds } = this.props;
+
+        if (error) {
+            return <div>Error! {error.message}</div>;
+        }
+
+        if (loading) {
+            return <div>Loading...</div>;
+        }
+
         return (
             <Paper >
                 <TableContainer>
@@ -57,11 +56,11 @@ class FundList extends React.Component{
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row: Array<string>) => {
+                            {funds.map((fund: Array<Fund>) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row[0]}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={fund[0]}>
                                         {columns.map((column: FundTableCol) => {
-                                            const value = row[column.id];
+                                            const value = fund[column.id];
                                             return (
                                                 <TableCell key={column.id} align="right">
                                                     {value}
@@ -81,9 +80,13 @@ class FundList extends React.Component{
 
 FundList.propTypes = {
     dispatch: PropTypes.func.isRequired
-}
+};
 
-const mapStateToProps = state => state.funds;
+const mapStateToProps = state => ({
+    funds: state.fundsReducer.funds,
+    loading: state.fundsReducer.loading,
+    error: state.fundsReducer.error
+});
 
 export default connect(
     mapStateToProps,
