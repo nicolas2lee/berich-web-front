@@ -44,30 +44,14 @@ class EnhancedTable extends React.Component{
     }
 
     render() {
-       /* const [order, setOrder] = React.useState('asc');
-        const [orderBy, setOrderBy] = React.useState('calories');
-        const [page ] = React.useState(0);*/
-        const selected = [];
-        let order = 'asc';
-        let orderBy = 'id';
         console.log(this.props)
-        const { error, loading, funds, classes} = this.props;
+        const { funds, order, orderBy, error, loading,  classes} = this.props;
 
         function descendingComparator(a, b, orderBy) {
             if (b[orderBy] < a[orderBy]) return -1;
             if (b[orderBy] > a[orderBy]) return 1;
             return 0;
         }
-
-        const handleRequestSort = (event: any, property: any) => {
-            console.log('in handle request sort')
-            const isAsc = orderBy === property && order === 'asc';
-            order = isAsc ? 'desc' : 'asc';
-            orderBy = property;
-
-            console.log(order)
-            console.log(orderBy)
-        };
 
         function stableSort(array: Array<any>, comparator: any) {
             const stabilizedThis = array.map((el, index) => [el, index]);
@@ -92,8 +76,6 @@ class EnhancedTable extends React.Component{
             new TableCol('value', true,'Value', 170, 'right', ''),
         ];
 
-        const isSelected = (name) => selected.indexOf(name) !== -1;
-
         if (error) {
             return <div>Error! {error.message}</div>;
         }
@@ -104,20 +86,11 @@ class EnhancedTable extends React.Component{
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <EnhancedTableToolbar />
                     <TableContainer>
-                        <Table
-                            className={classes.table}
-                            aria-labelledby="tableTitle"
-                            aria-label="enhanced table"
-                        >
+                        <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
                             <EnhancedTableHead
-                                classes={classes}
-                                numSelected={selected.length}
-                                order={order}
-                                orderBy={orderBy}
-                                onRequestSort={handleRequestSort}
-                                rowCount={funds.length}
+                               classes={classes}
                             />
                             <TableBody>
                                 {stableSort(funds, getComparator(order, orderBy))
@@ -157,6 +130,8 @@ EnhancedTable.propTypes = {
 
 const mapStateToProps = state => ({
     funds: state.fundsReducer.funds,
+    order: state.fundsReducer.order,
+    orderBy: state.fundsReducer.orderBy,
     loading: state.fundsReducer.loading,
     error: state.fundsReducer.error
 });
