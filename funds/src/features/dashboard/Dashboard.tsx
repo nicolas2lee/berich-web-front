@@ -4,7 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Typography from "@material-ui/core/Typography/Typography";
 import MenuIcon from '@material-ui/icons/Menu';
-import FundList from "../fund/FundList";
+import EnhancedTable from "../fund/EnhancedTable";
 
 
 class Dashboard extends React.Component {
@@ -22,7 +22,7 @@ class Dashboard extends React.Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <FundList></FundList>
+                <EnhancedTable></EnhancedTable>
             </div>
         );
     }

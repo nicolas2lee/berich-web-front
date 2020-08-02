@@ -11,15 +11,17 @@ export class FundModel {
 }
 
 
-export class FundTableCol {
+export class TableCol {
     id: string;
+    isNumeric: boolean;
     label: string;
     minWidth: number;
     align: string;
     format: string;
 
-    constructor(id: string, label: string, minWidth: number, align: string, format: string) {
+    constructor(id: string, isNumeric: boolean, label: string, minWidth: number, align: string, format: string) {
         this.id = id;
+        this.isNumeric = isNumeric;
         this.label = label;
         this.minWidth = minWidth;
         this.align = align;

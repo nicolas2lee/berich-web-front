@@ -2,12 +2,14 @@
   {
     "code": "000001",
     "chineseName": "华夏成长",
-    "pseudo": "hxcz"
+    "pseudo": "hxcz",
+    "value": 1.1
   },
   {
     "code": "000011",
     "chineseName": "华夏大盘精选",
-    "pseudo": "hxdpjx"
+    "pseudo": "hxdpjx",
+    "value": 1.2
   },
   {
     "code": "000763",
