@@ -13,6 +13,8 @@ import {mockFetchFunds} from "./FundsAction";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Fund, TableCol} from "./FundModel";
+import {BrowserRouter, Link, Route, Switch, useHistory} from "react-router-dom";
+import FundDetail from "./FundDetail";
 
 const styles = (theme) => ({
     root: {
@@ -83,46 +85,72 @@ class EnhancedTable extends React.Component{
         if (loading) {
             return <div>Loading...</div>;
         }
+
+/*        function showFundDetail(event, fund: Fund){
+            console.log(fund)
+        }*/
+
         return (
             <div className={classes.root}>
-                <Paper className={classes.paper}>
-                    <EnhancedTableToolbar />
-                    <TableContainer>
-                        <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
-                            <EnhancedTableHead
-                               classes={classes}
-                            />
-                            <TableBody>
-                                {stableSort(funds, getComparator(order, orderBy))
-                                    .map((fund: Fund, index) => {
-                                        return (
-                                            <TableRow hover
-                                                      role="checkbox"
-                                                      onClick={(event) => handleClick(event, row.name)}
-                                                      tabIndex={-1}
-                                                      key={fund[0]}>
-                                                {columns.map((column: TableCol) => {
-                                                    const value = fund[column.id];
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/funds/:id">
+                            <FundDetail />
+                        </Route>
+                        <Route exact path="/">
+                            <Paper className={classes.paper}>
+                                <EnhancedTableToolbar />
+                                <TableContainer>
+                                    <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
+                                        <EnhancedTableHead
+                                            classes={classes}
+                                        />
+                                        <TableBody>
+                                            {stableSort(funds, getComparator(order, orderBy))
+                                                .map((fund: Fund, index) => {
+                                                    const singleFundLink = '/funds/'+fund.code
                                                     return (
-                                                        <TableCell key={column.id}
-                                                                   align={column.isNumeric ? 'right' : 'left'}
-                                                                   >
-                                                            {value}
-                                                        </TableCell>
+                                                        <TableRow hover
+                                                                  role="checkbox"
+                                                                  /*onClick={(event) => showFundDetail(event, fund)}*/
+                                                                  tabIndex={-1}
+                                                                  key={fund[0]}>
+                                                            {columns.map((column: TableCol) => {
+                                                                const value = fund[column.id];
+                                                                return (
+                                                                    <TableCell key={column.id}
+                                                                               align={column.isNumeric ? 'right' : 'left'}
+                                                                    >
+                                                                        <Link to={singleFundLink}>
+                                                                            {value}
+                                                                        </Link>
+
+                                                                    </TableCell>
+                                                                );
+                                                            })}
+                                                        </TableRow>
                                                     );
                                                 })}
-                                            </TableRow>
-                                        );
-                                    })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Paper>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Paper>
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
             </div>
         );
     }
 }
 
+
+function Home() {
+    return (
+        <div>
+            <h2>Home</h2>
+        </div>
+    );
+}
 
 EnhancedTable.propTypes = {
     dispatch: PropTypes.func.isRequired

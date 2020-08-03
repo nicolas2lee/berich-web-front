@@ -10,6 +10,7 @@ import EnhancedTable from "../fund/EnhancedTable";
 class Dashboard extends React.Component {
 
     render() {
+
         return (
             <div>
                 <AppBar position="static">
