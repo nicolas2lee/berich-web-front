@@ -35,3 +35,12 @@ export interface Fund {
     pseudo: string;
     value: number;
 }
+
+export interface FundDetail {
+    day: string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+}

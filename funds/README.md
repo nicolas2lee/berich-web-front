@@ -45,3 +45,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Redux project structure
 https://marmelab.com/blog/2015/12/17/react-directory-structure.html
+
+## front graph
+https://github.com/reactivemarkets/react-financial-charts

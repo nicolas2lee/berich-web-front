@@ -13,8 +13,9 @@ import {mockFetchFunds} from "./FundsAction";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Fund, TableCol} from "./FundModel";
-import {BrowserRouter, Link, Route, Switch, useHistory} from "react-router-dom";
-import FundDetail from "./FundDetail";
+import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
+import FundDetail
+    from "./detail/FundDetail";
 
 const styles = (theme) => ({
     root: {
@@ -94,8 +95,7 @@ class EnhancedTable extends React.Component{
             <div className={classes.root}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/funds/:id">
-                            <FundDetail />
+                        <Route path="/funds/:id" component={FundDetail}>
                         </Route>
                         <Route exact path="/">
                             <Paper className={classes.paper}>
@@ -114,7 +114,7 @@ class EnhancedTable extends React.Component{
                                                                   role="checkbox"
                                                                   /*onClick={(event) => showFundDetail(event, fund)}*/
                                                                   tabIndex={-1}
-                                                                  key={fund[0]}>
+                                                                  key={index}>
                                                             {columns.map((column: TableCol) => {
                                                                 const value = fund[column.id];
                                                                 return (
@@ -141,15 +141,6 @@ class EnhancedTable extends React.Component{
             </div>
         );
     }
-}
-
-
-function Home() {
-    return (
-        <div>
-            <h2>Home</h2>
-        </div>
-    );
 }
 
 EnhancedTable.propTypes = {
