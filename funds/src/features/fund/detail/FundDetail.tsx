@@ -1,9 +1,10 @@
 // @ts-nocheck
 import React from "react";
-import BarChart from "./BarChart";
+import FundDetailLineChart from "./FundDetailLineChart";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {fetchFundDetailByFundCode, mockFundDetailByFundCode} from "./FundDetailAction";
+import {mockFundDetailByFundCode} from "./FundDetailAction";
+import {Card, Paper} from "@material-ui/core";
 
 
 class FundDetail extends React.Component{
@@ -12,11 +13,21 @@ class FundDetail extends React.Component{
         this.props.dispatch(mockFundDetailByFundCode(fundCode))
     }
 
+    getLabelFromFundDetails : string[] = (fundDetails: FundDetail[]) =>{
+        return fundDetails.map(e=>e.day)
+    }
+
+    getClosePriceFromFundDetails : string[] = (fundDetails: FundDetail[]) =>{
+        return fundDetails.map(e=>e.close)
+    }
+
     render() {
+
         const {fundDetails, loading, error} = this.props
         console.log('in fund detail render')
         console.log(this.props)
         console.log(fundDetails)
+
         if (error) {
             return <div>Error! {error.message}</div>;
         }
@@ -25,7 +36,23 @@ class FundDetail extends React.Component{
             return <div>Loading...</div>;
         }
 
-        return  <BarChart data={fundDetails}></BarChart>;
+        let labels = fundDetails.map(e => e.day);
+        let closePrices = fundDetails.map(e=>e.close);
+        let volumes = fundDetails.map(e=>e.volume)
+        return (
+            <div>
+                <Card>
+                    Fund Detail
+                </Card>
+                <Card>
+                    <FundDetailLineChart title={'Close price'} labels={labels} data={closePrices}></FundDetailLineChart>
+                </Card>
+                <Card>
+                    <FundDetailLineChart title={'Volume'} labels={labels} data={volumes}></FundDetailLineChart>
+                </Card>
+            </div>
+        )
+        ;
     }
 }
 

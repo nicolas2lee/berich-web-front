@@ -16,14 +16,14 @@ class Dashboard extends React.Component {
                 <AppBar position="static">
                     <Toolbar variant="dense">
                         <IconButton edge="start" color="inherit" aria-label="menu">
-                            <MenuIcon></MenuIcon>
+                            <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" color="inherit">
                             Photos
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <EnhancedTable></EnhancedTable>
+                <EnhancedTable />
             </div>
         );
     }
