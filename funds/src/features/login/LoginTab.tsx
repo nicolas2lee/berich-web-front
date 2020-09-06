@@ -14,7 +14,7 @@ import Link from "@material-ui/core/Link/Link";
 import Box from "@material-ui/core/Box/Box";
 import Container from "@material-ui/core/Container/Container";
 import { sizing } from '@material-ui/system';
-import {authenticated} from "../common/auth/AuthAction";
+import {authenticate, authenticated} from "../common/auth/AuthAction";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
@@ -61,11 +61,9 @@ class LoginTab extends React.Component {
         };
     }
 
-    handleSubmit(e) {
+    handleSubmit = e => {
         e.preventDefault();
-        this.props.dispatch();
-        console.log(email.value)
-        console.log(password.value)
+        this.props.dispatch(authenticate(email.value, password.value))
     }
 
     linkState = key => {
@@ -78,7 +76,7 @@ class LoginTab extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { email, password, submitted } = this.state;
+        const { email, password } = this.state;
 
 
         return (

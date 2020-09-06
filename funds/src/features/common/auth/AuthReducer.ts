@@ -4,7 +4,7 @@ const initialState = {
     authenticated: false,
     loading: false,
     error: null,
-    token: null
+    user: null
 };
 
 const authReducer = (state = initialState, action: any) => {
@@ -18,7 +18,7 @@ const authReducer = (state = initialState, action: any) => {
         case AUTHENTICATED:
             return Object.assign({}, state, {
                 authenticated: true,
-                token: action.payload.token,
+                user: action.payload.user,
                 loading: false
             });
         default:
