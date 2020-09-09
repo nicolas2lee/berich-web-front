@@ -8,13 +8,14 @@ class PrivateRoute extends React.Component{
     render() {
         const {authenticated} = this.props
         if (authenticated) {
-            return children;
+            return this.props.children;
         }else {
-            return (
+            return this.props.children;
+      /*      return (
                 <Route>
-                    {/*<Redirect to='/login' />*/}
+                    <Redirect to='/login' />
                 </Route>
-            );
+            );*/
         }
     }
 }

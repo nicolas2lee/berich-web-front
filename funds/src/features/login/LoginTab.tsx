@@ -7,16 +7,13 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import Button from "@material-ui/core/Button/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
-import Avatar from "@material-ui/core/Avatar/Avatar";
-import LockOutlinedIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Typography from "@material-ui/core/Typography/Typography";
 import Link from "@material-ui/core/Link/Link";
 import Box from "@material-ui/core/Box/Box";
-import Container from "@material-ui/core/Container/Container";
-import { sizing } from '@material-ui/system';
-import {authenticate, authenticated} from "../common/auth/AuthAction";
+import {authenticate} from "../common/auth/AuthAction";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {Redirect} from 'react-router-dom'
 
 function Copyright() {
     return (
@@ -75,9 +72,17 @@ class LoginTab extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
-        const { email, password } = this.state;
 
+        const { email, password } = this.state;
+        const { classes, authenticated, user } = this.props;
+
+        if (authenticated) {
+            //let history = useHistory()
+            console.log(authenticated)
+            console.log(user)
+            //history.push('/dashboard')
+            return <Redirect to='/dashboard'/>;
+        }
 
         return (
             <Box display="flex" justifyContent="center" width='1/4' >
@@ -161,6 +166,10 @@ LoginTab.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    authenticated: state.authReducer.authenticated,
+    user: state.authReducer.user,
+    loading: state.fundsReducer.loading,
+    error: state.fundsReducer.error
 
 });
 

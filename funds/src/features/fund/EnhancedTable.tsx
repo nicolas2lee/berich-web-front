@@ -97,7 +97,7 @@ class EnhancedTable extends React.Component{
                     <Switch>
                         <Route path="/funds/:id" component={FundDetail}>
                         </Route>
-                        <Route exact path="/">
+                        <Route exact path="/dashboard">
                             <Paper className={classes.paper}>
                                 <EnhancedTableToolbar />
                                 <TableContainer>
