@@ -23,8 +23,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {closeMenu, openMenu} from "./DashboardAction";
+import {closeMenu, menuSelected, openMenu} from "./DashboardAction";
 import EnhancedTable from "../fund/EnhancedTable";
+import {MenuElement} from "./DashboardModel";
 
 const drawerWidth = 240;
 
@@ -85,20 +86,23 @@ const styles = (theme) => ({
     },
 });
 
-//const theme = useTheme();
-
 class Dashboard extends React.Component {
 
     render() {
-        const {open, classes, theme } = this.props;
+        const { classes, theme, open, menu, selectedWidget, dispatch } = this.props;
 
         const handleDrawerOpen = () => {
-            this.props.dispatch(openMenu())
+            dispatch(openMenu())
         };
 
         const handleDrawerClose = () => {
-            this.props.dispatch(closeMenu())
+            dispatch(closeMenu())
         };
+
+        function handleMenuClick(e, menuElement) {
+            console.log(menuElement)
+            dispatch(menuSelected(menuElement))
+        }
 
         return (
             <div className={classes.root}>
@@ -120,7 +124,7 @@ class Dashboard extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap>
-                            Persistent drawer
+                            My dashboard
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -140,10 +144,14 @@ class Dashboard extends React.Component {
                     </div>
                     <Divider />
                     <List>
-                        {['MyWatchList', 'Market'].map((text, index) => (
-                            <ListItem button key={text}>
+                        {menu.map((menuElement, index) => (
+                            <ListItem button key={menuElement.label}
+                                      value={menuElement}
+                                      onClick={(e)=> handleMenuClick(e, menuElement)}
+                                      selected={selectedWidget===menuElement}
+                            >
                                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemText primary={menuElement.label} />
                             </ListItem>
                         ))}
                     </List>
@@ -176,6 +184,8 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
     open: state.dashboardReducer.open,
+    menu: state.dashboardReducer.menu,
+    selectedWidget: state.dashboardReducer.selectedWidget,
 });
 
 export default connect(
