@@ -3,17 +3,7 @@ import React from 'react';
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import {
-    CssBaseline,
-    Divider,
-    Drawer,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-    useTheme
-} from "@material-ui/core";
+import {CssBaseline, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -23,9 +13,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {closeMenu, menuSelected, openMenu} from "./DashboardAction";
+import {closeMenu, menuSelected, openMenu, selectMenuWidget} from "./DashboardAction";
 import EnhancedTable from "../fund/EnhancedTable";
-import {MenuElement} from "./DashboardModel";
 
 const drawerWidth = 240;
 
@@ -88,8 +77,13 @@ const styles = (theme) => ({
 
 class Dashboard extends React.Component {
 
+    componentDidMount() {
+        const { selectedWidget, dispatch } = this.props;
+        dispatch(selectMenuWidget(selectedWidget))
+    }
+
     render() {
-        const { classes, theme, open, menu, selectedWidget, dispatch } = this.props;
+        const { classes, theme, open, menu, selectedWidget, funds, loading, error, dispatch } = this.props;
 
         const handleDrawerOpen = () => {
             dispatch(openMenu())
@@ -101,7 +95,16 @@ class Dashboard extends React.Component {
 
         function handleMenuClick(e, menuElement) {
             console.log(menuElement)
-            dispatch(menuSelected(menuElement))
+            dispatch(selectMenuWidget(menuElement))
+        }
+
+        var detailComponent;
+        if (error) {
+            detailComponent = <div>Error! {error.message}</div>
+        } else if (loading) {
+            detailComponent = <div>Loading...</div>
+        } else {
+            detailComponent = <EnhancedTable funds={funds} />
         }
 
         return (
@@ -165,13 +168,9 @@ class Dashboard extends React.Component {
                         ))}
                     </List>
                 </Drawer>
-                <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
+                <main className={clsx(classes.content, {[classes.contentShift]: open })}>
                     <div className={classes.drawerHeader} />
-                    <EnhancedTable />
+                    {detailComponent}
                 </main>
             </div>
         );
@@ -186,6 +185,9 @@ const mapStateToProps = state => ({
     open: state.dashboardReducer.open,
     menu: state.dashboardReducer.menu,
     selectedWidget: state.dashboardReducer.selectedWidget,
+    funds: state.dashboardReducer.funds,
+    loading: state.dashboardReducer.loading,
+    error: state.dashboardReducer.error
 });
 
 export default connect(

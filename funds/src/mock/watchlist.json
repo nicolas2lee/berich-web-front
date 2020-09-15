@@ -1,0 +1,24 @@
+[
+  {
+    "code": "000001",
+    "chineseName": "华夏成长",
+    "pseudo": "hxcz",
+    "value": 1.1
+  },
+  {
+    "code": "000011",
+    "chineseName": "华夏大盘精选",
+    "pseudo": "hxdpjx",
+    "value": 1.2
+  },
+  {
+    "code": "000763",
+    "chineseName": "工银新财富灵活配置",
+    "pseudo": "gyxcflhpz"
+  },
+  {
+    "code": "001001",
+    "chineseName": "华夏债券",
+    "pseudo": "hxzq"
+  }
+]

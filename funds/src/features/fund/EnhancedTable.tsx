@@ -42,13 +42,10 @@ const styles = (theme) => ({
 });
 
 class EnhancedTable extends React.Component{
-    componentDidMount(): void {
-        this.props.dispatch(mockFetchFunds())
-    }
 
     render() {
         console.log(this.props)
-        const { funds, order, orderBy, error, loading,  classes} = this.props;
+        const { classes, order, orderBy, funds } = this.props;
 
         function descendingComparator(a, b, orderBy) {
             if (b[orderBy] < a[orderBy]) return -1;
@@ -79,24 +76,11 @@ class EnhancedTable extends React.Component{
             new TableCol('value', true,'Value', 170, 'right', ''),
         ];
 
-        if (error) {
-            return <div>Error! {error.message}</div>;
-        }
-
-        if (loading) {
-            return <div>Loading...</div>;
-        }
-
-/*        function showFundDetail(event, fund: Fund){
-            console.log(fund)
-        }*/
-
         return (
             <div className={classes.root}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/funds/:id" component={FundDetail}>
-                        </Route>
+                        <Route path="/funds/:id" component={FundDetail} />
                         <Route exact path="/dashboard">
                             <Paper className={classes.paper}>
                                 <EnhancedTableToolbar />
@@ -148,11 +132,8 @@ EnhancedTable.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    funds: state.fundsReducer.funds,
     order: state.fundsReducer.order,
     orderBy: state.fundsReducer.orderBy,
-    loading: state.fundsReducer.loading,
-    error: state.fundsReducer.error
 });
 
 export default connect(

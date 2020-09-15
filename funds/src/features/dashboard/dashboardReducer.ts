@@ -1,8 +1,9 @@
-import {CLOSE_MENU, MENU_SELECTED, menuSelected, OPEN_MENU} from "./DashboardAction";
-import {DashboardMenu, MenuElement} from "./DashboardModel";
+import {CLOSE_MENU, FETCH_FUNDS_LIST_SUCCESS, MENU_SELECTED, OPEN_MENU} from "./DashboardAction";
+import {MenuElement} from "./DashboardModel";
+import {FETCHING_FUNDS_LIST} from "../fund/FundsAction";
 
-const ALL_FUNDS = new MenuElement("All funds")
-const MY_WATCH_LIST = new MenuElement("My watch list")
+export const ALL_FUNDS = new MenuElement("All funds")
+export const MY_WATCH_LIST = new MenuElement("My watch list")
 
 const DASHBOARD_MENU = [
     ALL_FUNDS,
@@ -14,7 +15,8 @@ const initialState = {
     loading: false,
     error: null,
     menu: DASHBOARD_MENU,
-    selectedWidget: MY_WATCH_LIST
+    selectedWidget: MY_WATCH_LIST,
+    funds: []
 };
 
 const dashboardReducer = (state = initialState, action: any) => {
@@ -31,6 +33,15 @@ const dashboardReducer = (state = initialState, action: any) => {
             return Object.assign({}, state, {
                 selectedWidget: action.payload.selectedMenuElement
             })
+        case FETCHING_FUNDS_LIST:
+            return Object.assign({}, state, {
+                loading: true
+            });
+        case FETCH_FUNDS_LIST_SUCCESS:
+            return Object.assign({}, state, {
+                funds: action.payload.funds,
+                loading: false
+            });
         default:
             return state
     }
