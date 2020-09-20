@@ -6,6 +6,8 @@ import MY_WATCH_LIST_DATA from "../../mock/watchlist.json";
 
 export const OPEN_MENU = 'OPEN_MENU';
 export const CLOSE_MENU = 'CLOSE_MENU';
+export const OPEN_ACCOUNT_MENU = 'OPEN_ACCOUNT_MENU';
+export const CLOSE_ACCOUNT_MENU = 'CLOSE_ACCOUNT_MENU';
 export const MENU_SELECTED = 'MENU_SELECTED';
 export const FETCHING_FUNDS_LIST = 'FETCHING_FUNDS_LIST';
 export const FETCH_FUNDS_LIST_SUCCESS = 'FETCH_FUNDS_LIST_SUCCESS';
@@ -19,6 +21,20 @@ export function openMenu() {
 export function closeMenu() {
     return {
         type: CLOSE_MENU,
+    }
+}
+export function openAccountMenu(anchorEl: any) {
+    return {
+        type: OPEN_ACCOUNT_MENU,
+        payload: {
+            anchorEl: anchorEl
+        }
+    }
+}
+
+export function closeAccountMenu() {
+    return {
+        type: CLOSE_ACCOUNT_MENU,
     }
 }
 

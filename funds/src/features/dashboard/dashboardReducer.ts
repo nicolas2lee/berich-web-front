@@ -1,4 +1,11 @@
-import {CLOSE_MENU, FETCH_FUNDS_LIST_SUCCESS, MENU_SELECTED, OPEN_MENU} from "./DashboardAction";
+import {
+    CLOSE_ACCOUNT_MENU,
+    CLOSE_MENU,
+    FETCH_FUNDS_LIST_SUCCESS,
+    MENU_SELECTED,
+    OPEN_ACCOUNT_MENU,
+    OPEN_MENU
+} from "./DashboardAction";
 import {MenuElement} from "./DashboardModel";
 import {FETCHING_FUNDS_LIST} from "../fund/FundsAction";
 
@@ -12,6 +19,8 @@ const DASHBOARD_MENU = [
 
 const initialState = {
     open: true,
+    accountMenuOpen: false,
+    accountMenuAnchorEl: null,
     loading: false,
     error: null,
     menu: DASHBOARD_MENU,
@@ -28,6 +37,16 @@ const dashboardReducer = (state = initialState, action: any) => {
         case CLOSE_MENU:
             return Object.assign({}, state, {
                 open: false
+            });
+        case OPEN_ACCOUNT_MENU:
+            return Object.assign({}, state, {
+                accountMenuOpen: true,
+                accountMenuAnchorEl: action.payload.anchorEl
+            });
+        case CLOSE_ACCOUNT_MENU:
+            return Object.assign({}, state, {
+                accountMenuOpen: false,
+                accountMenuAnchorEl: null
             });
         case MENU_SELECTED:
             return Object.assign({}, state, {

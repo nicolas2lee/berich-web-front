@@ -3,7 +3,19 @@ import React from 'react';
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import {CssBaseline, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import {
+    Badge,
+    CssBaseline,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Typography
+} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -13,8 +25,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {closeMenu, menuSelected, openMenu, selectMenuWidget} from "./DashboardAction";
+import {closeAccountMenu, closeMenu, openAccountMenu, openMenu, selectMenuWidget} from "./DashboardAction";
 import EnhancedTable from "../fund/EnhancedTable";
+import {AccountCircle} from "@material-ui/icons";
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 const drawerWidth = 240;
 
@@ -73,6 +87,15 @@ const styles = (theme) => ({
         }),
         marginLeft: 0,
     },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+    grow: {
+        flexGrow: 1,
+    },
 });
 
 class Dashboard extends React.Component {
@@ -83,7 +106,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const { classes, theme, open, menu, selectedWidget, funds, loading, error, dispatch } = this.props;
+        const { classes, theme, open, accountMenuOpen, accountMenuAnchorEl, menu, selectedWidget, funds, loading, error, dispatch } = this.props;
 
         const handleDrawerOpen = () => {
             dispatch(openMenu())
@@ -91,6 +114,17 @@ class Dashboard extends React.Component {
 
         const handleDrawerClose = () => {
             dispatch(closeMenu())
+        };
+
+        const handleAccountMenuOpen = (e) => {
+            console.log(e)
+            let anchorEl = e.currentTarget
+            console.log(anchorEl)
+            dispatch(openAccountMenu(anchorEl))
+        };
+
+        const handleAccountMenuClose = () => {
+            dispatch(closeAccountMenu())
         };
 
         function handleMenuClick(e, menuElement) {
@@ -106,6 +140,20 @@ class Dashboard extends React.Component {
         } else {
             detailComponent = <EnhancedTable funds={funds} />
         }
+
+        const renderMenu = (
+            <Menu
+                anchorEl={accountMenuAnchorEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                id='account-menu'
+                keepMounted
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={accountMenuOpen}
+                  >
+                <MenuItem onClick={handleAccountMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={handleAccountMenuClose}>Logout</MenuItem>
+            </Menu>
+        );
 
         return (
             <div className={classes.root}>
@@ -129,8 +177,32 @@ class Dashboard extends React.Component {
                         <Typography variant="h6" noWrap>
                             My dashboard
                         </Typography>
+                        <div className={classes.grow} />
+                        <div className={classes.sectionDesktop}>
+                     {/*       <IconButton aria-label="show 4 new mails" color="inherit">
+                                <Badge badgeContent={4} color="secondary">
+                                    <MailIcon />
+                                </Badge>
+                            </IconButton>*/}
+                            <IconButton aria-label="show 17 new notifications" color="inherit">
+                                <Badge badgeContent={17} color="secondary">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls="account-menu"
+                                aria-haspopup="true"
+                                onClick={handleAccountMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </div>
                     </Toolbar>
                 </AppBar>
+                {renderMenu}
                 <Drawer
                     className={classes.drawer}
                     variant="persistent"
@@ -159,14 +231,14 @@ class Dashboard extends React.Component {
                         ))}
                     </List>
                     <Divider />
-                    <List>
+                {/*    <List>
                         {['All mail', 'Trash', 'Spam'].map((text, index) => (
                             <ListItem button key={text}>
                                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))}
-                    </List>
+                    </List>*/}
                 </Drawer>
                 <main className={clsx(classes.content, {[classes.contentShift]: open })}>
                     <div className={classes.drawerHeader} />
@@ -183,6 +255,8 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
     open: state.dashboardReducer.open,
+    accountMenuOpen: state.dashboardReducer.accountMenuOpen,
+    accountMenuAnchorEl: state.dashboardReducer.accountMenuAnchorEl,
     menu: state.dashboardReducer.menu,
     selectedWidget: state.dashboardReducer.selectedWidget,
     funds: state.dashboardReducer.funds,
