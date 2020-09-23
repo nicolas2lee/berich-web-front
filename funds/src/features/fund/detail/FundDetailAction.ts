@@ -4,6 +4,7 @@ import data from "../../../mock/fund-detail.json";
 export const FETCHING_FUND_DETAIL = 'FETCHING_FUND_DETAIL';
 export const FETCH_FUND_DETAIL_SUCCESS = 'FETCH_FUND_DETAIL_SUCCESS';
 export const PREPARE_GRAPH_DATA = 'PREPARE_GRAPH_DATA';
+export const TAB_VALUE_CHANGE = 'TAB_VALUE_CHANGE';
 
 export function fetchingFundDetail() {
     return {
@@ -43,5 +44,14 @@ export function mockFundDetailByFundCode(fundCode: string) {
     return dispatch => {
         dispatch(fetchingFundDetail());
         dispatch(fetchFundDetailSuccess(data as unknown as FundDetail[]))
+    }
+}
+
+export function changeTab(newValue: number){
+    return {
+        type: TAB_VALUE_CHANGE,
+        payload: {
+            tabValue: newValue,
+        }
     }
 }

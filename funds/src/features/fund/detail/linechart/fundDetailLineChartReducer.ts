@@ -1,43 +1,29 @@
-import {
-    FETCH_FUND_DETAIL_SUCCESS,
-    FETCHING_FUND_DETAIL,
-    PREPARE_GRAPH_DATA,
-    TAB_VALUE_CHANGE
-} from "./FundDetailAction";
-import {FundDetail} from "../FundModel";
+import {Period} from "./FunDetailLineChartModel";
+import {PERIOD_CHANGE} from "./FundDetailLineChartAction";
+
+
+export const LAST_MONTH = new Period(1, "last 1 month")
+export const LAST_THREE_MONTHS = new Period(3, "last 3 months")
+export const LAST_SIX_MONTHS = new Period(6, "last 6 months")
+export const LAST_YEAR =  new Period(12, "last year")
+export const LAST_THREE_YEARS = new Period(36, "last 3 years")
+
+
+export const PERIODS = [
+    LAST_THREE_YEARS,
+    LAST_YEAR,
+    LAST_SIX_MONTHS,
+    LAST_THREE_MONTHS,
+    LAST_MONTH
+];
 
 const initialState = {
-    fundDetails: [],
-    loading: true,
-    error: null,
-    tabValue: 0
+   selectedPeriod: LAST_THREE_YEARS
 };
 
-function getGraphLabelFromFundDetails(fundDetails: FundDetail[]){
-    console.log('in get graph label ')
-    console.log(fundDetails)
-    let labels = fundDetails.map(e=> e.day);
-    console.log('labels are:')
-    console.log(labels)
-    return labels;
-}
 
-const fundDetailReducer = (state = initialState, action: any) => {
+const fundDetailLineChartReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case FETCHING_FUND_DETAIL:
-            return Object.assign({}, state, {
-                loading: true
-            });
-        case FETCH_FUND_DETAIL_SUCCESS:
-            console.log(action)
-            return Object.assign({}, state, {
-                fundDetails: action.payload.fundDetails,
-                loading: false
-            });
-        case TAB_VALUE_CHANGE:
-            return Object.assign({}, state, {
-                tabValue: action.payload.tabValue,
-            });
      /*   case PREPARE_GRAPH_DATA:
             let fundDetails = action.payload.fundDetails;
             console.log('log fundDetails action')
@@ -69,9 +55,13 @@ const fundDetailReducer = (state = initialState, action: any) => {
                     }]
                 }
             });*/
+        case PERIOD_CHANGE:
+            return Object.assign({}, state, {
+                selectedPeriod: action.payload.selectedPeriod
+            })
         default:
             return state
     }
 };
 
-export default fundDetailReducer
+export default fundDetailLineChartReducer
